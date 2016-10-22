@@ -8,7 +8,16 @@ This library is a very early stage and will probably change a lot in the nearest
 
 Provide methods through bouncer
 ```java
-   // Wrap in bouncer
+
+    // Actual method is private
+    private Void login(LoginParams params) {
+        
+        params.listener.getValue().onLoginSuccessful();
+
+        return null;
+    }
+   
+   // Provide through bouncer
    public Bouncer<LoginParams, Void> login() {
         return new Bouncer<LoginParams, Void>() {
             @Override
@@ -16,14 +25,6 @@ Provide methods through bouncer
                 return login(params);
             }
         };
-    }
-
-    // Actual methos is private
-    private Void login(LoginParams params) {
-        
-        params.listener.getValue().onLoginSuccessful();
-
-        return null;
     }
 ```
 
