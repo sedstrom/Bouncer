@@ -76,4 +76,4 @@ private LoginParams createLoginParams(String username, String password) {
         );
     }
 ```
-![](http://gph.is/1bgR8Yz)
+![](http://i.giphy.com/OdyGA2spBFRCg.gif)
