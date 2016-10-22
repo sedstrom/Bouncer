@@ -45,7 +45,7 @@ public class LoginParams extends Params {
 }
 ```
 
-Pass validation before getting acces to actual method
+Pass validation before getting access to actual method
 ```java
   LoginParams params = createLoginParams(username.text().toString(), password.text().toString());
   CheckResult<Void> result = api.login().check(params);
@@ -56,7 +56,7 @@ Pass validation before getting acces to actual method
   }
 ```
 
-Get validation results per paramter
+Get validation result per paramter
 ```java
 private LoginParams createLoginParams(String username, String password) {
         return new LoginParams(
