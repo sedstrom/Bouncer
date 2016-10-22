@@ -2,7 +2,7 @@
 Share parameter validation between methods and callers.
 
 ## Disclaimer
-This library is a very early stage and has not uet recommended to use in production.
+This library is a very early stage and will probably change a lot in the nearest future :)
 
 ## Usage
 
