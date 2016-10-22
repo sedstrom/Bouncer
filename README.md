@@ -7,7 +7,7 @@ This library is a very early stage and will probably change a lot in the nearest
 ## Usage
 
 Provide methods through bouncer
-```
+```java
    // Wrap in bouncer
    public Bouncer<LoginParams, Void> login() {
         return new Bouncer<LoginParams, Void>() {
@@ -29,7 +29,7 @@ Provide methods through bouncer
 
 Define paramter validation:
 
-```
+```java
 public class LoginParams extends Params {
     
     ...
@@ -45,7 +45,7 @@ public class LoginParams extends Params {
 ```
 
 Pass validation before getting acces to actual method
-```
+```java
   LoginParams params = createLoginParams(username.text().toString(), password.text().toString());
   CheckResult<Void> result = api.login().check(params);
   if(result.isOk()) {
@@ -56,7 +56,7 @@ Pass validation before getting acces to actual method
 ```
 
 Get validation results per paramter
-```
+```java
 private LoginParams createLoginParams(String username, String password) {
         return new LoginParams(
                 new Param<String>(username) {
