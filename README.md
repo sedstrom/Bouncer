@@ -1,5 +1,5 @@
 # Bouncer
-Share parameter validation between methods and callers.
+Share parameter validation between method and caller.
 
 ## Disclaimer
 This library is in a very early stage and will probably change a lot in the nearest future :)
