@@ -66,7 +66,7 @@ public class MainActivityRx extends AppCompatActivity implements RegistrationLis
                         new Func2<TextViewTextChangeEvent, TextViewTextChangeEvent, CheckResult<Void>>() {
                             @Override
                             public CheckResult<Void> call(TextViewTextChangeEvent username, TextViewTextChangeEvent password) {
-                                RegistrationParams params = createRegisterParams(username.text().toString(), password.text().toString());
+                                RegistrationParams params = createRegistrationParams(username.text().toString(), password.text().toString());
                                 return api.register().check(params);
                             }
                         })
@@ -101,7 +101,7 @@ public class MainActivityRx extends AppCompatActivity implements RegistrationLis
                 }).subscribe();
     }
 
-    private RegistrationParams createRegisterParams(String username, String password) {
+    private RegistrationParams createRegistrationParams(String username, String password) {
         return new RegistrationParams(
                 new Param<String>(username) {
 
