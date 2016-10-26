@@ -10,19 +10,17 @@ Provide methods through bouncer
 ```java
 
     // Actual method is private
-    private Void login(LoginParams params) {
-        
-        params.listener.getValue().onLoginSuccessful();
-
+    private Void register(RegistrationParams params) {
+        params.getListener().onRegistrationSuccessful(params);
         return null;
     }
    
    // Provide through bouncer
-   public Bouncer<LoginParams, Void> login() {
-        return new Bouncer<LoginParams, Void>() {
+   public Bouncer<RegistrationParams, Void> register() {
+        return new Bouncer<RegistrationParams, Void>() {
             @Override
-            protected Void welcome(LoginParams params) {
-                return login(params);
+            protected Void welcome(RegistrationParams params) {
+                return register(params);
             }
         };
     }
@@ -35,10 +33,10 @@ public class LoginParams extends Params {
     
     ...
 
-    public LoginParams(Param<String> username, Param<String> password, Param<LoginListener> listener) {
+     public RegistrationParams(Param<String> username, Param<String> password, Param<RegistrationListener> listener) {
         super();
         
-        registerValidator(new EmailAddressValidator(this.username, "Username needs to be an email address."));
+         addValidator(new EmailAddressValidator(username, "Username needs to be an email address."));
         
         ...
     }
@@ -47,8 +45,8 @@ public class LoginParams extends Params {
 
 Pass validation before getting access to actual method
 ```java
-  LoginParams params = createLoginParams(username.text().toString(), password.text().toString());
-  CheckResult<Void> result = api.login().check(params);
+  RegistrationParams params = createRegistrationParams(username.text().toString(), password.text().toString());
+  CheckResult<Void> result = api.register().check(params);
   if(result.isOk()) {
     result.call(); // Calls encapsulated method
   } else {
@@ -58,18 +56,20 @@ Pass validation before getting access to actual method
 
 Get validation result per paramter
 ```java
-private LoginParams createLoginParams(String username, String password) {
-        return new LoginParams(
+ private RegistrationParams createRegistrationParams(String username, String password) {
+        return new RegistrationParams(
                 new Param<String>(username) {
 
                     @Override
                     public void onValidationPassed() {
-                        usernameTitle.setText("Username is valid!");
+                        usernameTitle.setText("");
+                        usernameTitle.setTextColor(Color.GREEN);
                     }
 
                     @Override
                     public void onValidationFailed(String reason) {
                         usernameTitle.setText(reason);
+                        usernameTitle.setTextColor(Color.RED);
                     }
                 },
                 ...
