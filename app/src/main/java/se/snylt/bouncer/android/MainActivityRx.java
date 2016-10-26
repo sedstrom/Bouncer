@@ -4,7 +4,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -22,8 +21,8 @@ import rx.functions.Func2;
 import se.snylt.bouncer.CheckResult;
 import se.snylt.bouncer.Param;
 import se.snylt.bouncer.android.api.Api;
-import se.snylt.bouncer.android.api.RegistrationParams;
 import se.snylt.bouncer.android.api.RegistrationListener;
+import se.snylt.bouncer.android.api.RegistrationParams;
 
 
 public class MainActivityRx extends AppCompatActivity implements RegistrationListener {
@@ -108,13 +107,11 @@ public class MainActivityRx extends AppCompatActivity implements RegistrationLis
                     @Override
                     public void onValidationPassed() {
                         usernameTitle.setText("");
-                        usernameTitle.setTextColor(Color.GREEN);
                     }
 
                     @Override
                     public void onValidationFailed(String reason) {
                         usernameTitle.setText(reason);
-                        usernameTitle.setTextColor(Color.RED);
                     }
                 },
                 new Param<String>(password) {
@@ -122,13 +119,11 @@ public class MainActivityRx extends AppCompatActivity implements RegistrationLis
                     @Override
                     public void onValidationPassed() {
                         passwordTitle.setText("");
-                        passwordTitle.setTextColor(Color.GREEN);
                     }
 
                     @Override
                     public void onValidationFailed(String reason) {
                         passwordTitle.setText(reason);
-                        passwordTitle.setTextColor(Color.RED);
                     }
                 },
                 new Param<RegistrationListener>(MainActivityRx.this)

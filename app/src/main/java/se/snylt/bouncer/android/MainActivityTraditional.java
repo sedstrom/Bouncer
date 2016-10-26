@@ -1,6 +1,5 @@
 package se.snylt.bouncer.android;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -16,8 +15,8 @@ import butterknife.ButterKnife;
 import se.snylt.bouncer.CheckResult;
 import se.snylt.bouncer.Param;
 import se.snylt.bouncer.android.api.Api;
-import se.snylt.bouncer.android.api.RegistrationParams;
 import se.snylt.bouncer.android.api.RegistrationListener;
+import se.snylt.bouncer.android.api.RegistrationParams;
 
 
 public class MainActivityTraditional extends AppCompatActivity implements RegistrationListener {
@@ -97,7 +96,6 @@ public class MainActivityTraditional extends AppCompatActivity implements Regist
                     @Override
                     public void onValidationFailed(String reason) {
                         usernameTitle.setText(reason);
-                        usernameTitle.setTextColor(Color.RED);
                     }
                 },
                 new Param<String>(password) {
@@ -110,7 +108,6 @@ public class MainActivityTraditional extends AppCompatActivity implements Regist
                     @Override
                     public void onValidationFailed(String reason) {
                         passwordTitle.setText(reason);
-                        passwordTitle.setTextColor(Color.RED);
                     }
                 },
                 new Param<RegistrationListener>(MainActivityTraditional.this)
