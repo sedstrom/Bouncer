@@ -15,9 +15,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import se.snylt.bouncer.CheckResult;
 import se.snylt.bouncer.Param;
+import se.snylt.bouncer.android.api.Api;
+import se.snylt.bouncer.android.api.RegistrationParams;
+import se.snylt.bouncer.android.api.RegistrationListener;
 
 
-public class MainActivityTraditional extends AppCompatActivity implements LoginListener {
+public class MainActivityTraditional extends AppCompatActivity implements RegistrationListener {
 
     @BindView(R.id.usernameTitle)
     TextView usernameTitle;
@@ -31,8 +34,8 @@ public class MainActivityTraditional extends AppCompatActivity implements LoginL
     @BindView(R.id.passwordEt)
     EditText passwordEt;
 
-    @BindView(R.id.loginBtn)
-    Button loginBtn;
+    @BindView(R.id.registerBtn)
+    Button registerBtn;
 
     private final Api api = new Api();
 
@@ -49,7 +52,7 @@ public class MainActivityTraditional extends AppCompatActivity implements LoginL
         passwordEt.addTextChangedListener(createTextWatcher());
         passwordEt.setText("");
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 result.call();
@@ -77,13 +80,13 @@ public class MainActivityTraditional extends AppCompatActivity implements LoginL
     }
 
     private void onInputChanged() {
-        LoginParams params = createLoginParams(usernameEt.getText().toString(), passwordEt.getText().toString());
-        result = api.login().check(params);
-        loginBtn.setEnabled(result.isOk());
+        RegistrationParams params = createRegistrationParams(usernameEt.getText().toString(), passwordEt.getText().toString());
+        result = api.register().check(params);
+        registerBtn.setEnabled(result.isOk());
     }
 
-    private LoginParams createLoginParams(String username, String password) {
-        return new LoginParams(
+    private RegistrationParams createRegistrationParams(String username, String password) {
+        return new RegistrationParams(
                 new Param<String>(username) {
 
                     @Override
@@ -110,12 +113,12 @@ public class MainActivityTraditional extends AppCompatActivity implements LoginL
                         passwordTitle.setTextColor(Color.RED);
                     }
                 },
-                new Param<LoginListener>(MainActivityTraditional.this)
+                new Param<RegistrationListener>(MainActivityTraditional.this)
         );
     }
 
     @Override
-    public void onLoginSuccessful() {
-        Toast.makeText(MainActivityTraditional.this, "Login successful!", Toast.LENGTH_LONG).show();
+    public void onRegistrationSuccessful(RegistrationParams params) {
+        Toast.makeText(MainActivityTraditional.this, "Registration successful!\n" + params.getUsername() + "\n" + params.getPassword(), Toast.LENGTH_LONG).show();
     }
 }

@@ -21,9 +21,12 @@ import rx.functions.Func1;
 import rx.functions.Func2;
 import se.snylt.bouncer.CheckResult;
 import se.snylt.bouncer.Param;
+import se.snylt.bouncer.android.api.Api;
+import se.snylt.bouncer.android.api.RegistrationParams;
+import se.snylt.bouncer.android.api.RegistrationListener;
 
 
-public class MainActivityRx extends AppCompatActivity implements LoginListener {
+public class MainActivityRx extends AppCompatActivity implements RegistrationListener {
 
     private final Api api = new Api();
 
@@ -39,8 +42,8 @@ public class MainActivityRx extends AppCompatActivity implements LoginListener {
     @BindView(R.id.passwordEt)
     EditText passwordEt;
 
-    @BindView(R.id.loginBtn)
-    Button loginBtn;
+    @BindView(R.id.registerBtn)
+    Button registerBtn;
 
     private Subscription login;
 
@@ -56,35 +59,40 @@ public class MainActivityRx extends AppCompatActivity implements LoginListener {
         super.onResume();
 
         login = Observable
-                // Create new params each time either of username or password input changes
+                // Create new params each time either of username or password input changes and check if valid
                 .combineLatest(
                         RxTextView.textChangeEvents(usernameEt),
                         RxTextView.textChangeEvents(passwordEt),
                         new Func2<TextViewTextChangeEvent, TextViewTextChangeEvent, CheckResult<Void>>() {
                             @Override
                             public CheckResult<Void> call(TextViewTextChangeEvent username, TextViewTextChangeEvent password) {
-                                LoginParams params = createLoginParams(username.text().toString(), password.text().toString());
-                                return api.login().check(params);
+                                RegistrationParams params = createRegisterParams(username.text().toString(), password.text().toString());
+                                return api.register().check(params);
                             }
                         })
+                // Sync button enabled / disabled
+                .doOnNext(new Action1<CheckResult<Void>>() {
+                    @Override
+                    public void call(CheckResult<Void> checkResult) {
+                        registerBtn.setEnabled(checkResult.isOk());
+                    }
+                })
                 // No need to let through invalid params
                 .filter(new Func1<CheckResult<Void>, Boolean>() {
                     @Override
                     public Boolean call(CheckResult<Void> result) {
-                        boolean valid = result.isOk();
-                        loginBtn.setEnabled(valid);
-                        return valid;
+                        return result.isOk();
                     }
                 })
                 .onBackpressureLatest()
-                // Button click + ok result = yey!
-                .zipWith(RxView.clicks(loginBtn), new Func2<CheckResult<Void>, Void, CheckResult<Void>>() {
+                // Button click + latest valid params
+                .withLatestFrom(RxView.clicks(registerBtn), new Func2<CheckResult<Void>, Void, CheckResult<Void>>() {
                     @Override
                     public CheckResult<Void> call(CheckResult<Void> result, Void aVoid) {
                         return result;
                     }
                 })
-                // A validated result + button click -> login
+                // Call register method
                 .doOnNext(new Action1<CheckResult<Void>>() {
                     @Override
                     public void call(CheckResult<Void> result) {
@@ -93,8 +101,8 @@ public class MainActivityRx extends AppCompatActivity implements LoginListener {
                 }).subscribe();
     }
 
-    private LoginParams createLoginParams(String username, String password) {
-        return new LoginParams(
+    private RegistrationParams createRegisterParams(String username, String password) {
+        return new RegistrationParams(
                 new Param<String>(username) {
 
                     @Override
@@ -123,7 +131,7 @@ public class MainActivityRx extends AppCompatActivity implements LoginListener {
                         passwordTitle.setTextColor(Color.RED);
                     }
                 },
-                new Param<LoginListener>(MainActivityRx.this)
+                new Param<RegistrationListener>(MainActivityRx.this)
         );
     }
 
@@ -134,7 +142,7 @@ public class MainActivityRx extends AppCompatActivity implements LoginListener {
     }
 
     @Override
-    public void onLoginSuccessful() {
-        Toast.makeText(MainActivityRx.this, "Login successful!", Toast.LENGTH_LONG).show();
+    public void onRegistrationSuccessful(RegistrationParams params) {
+        Toast.makeText(MainActivityRx.this, "Registration successful!\n" + params.getUsername() + "\n" + params.getPassword(), Toast.LENGTH_LONG).show();
     }
 }

@@ -4,11 +4,11 @@ import java.util.regex.Pattern;
 
 import se.snylt.bouncer.Param;
 
-public abstract class RegexValidator extends Validator<String> {
+public class RegexValidator extends Validator<String> {
 
     private final Pattern pattern;
 
-    protected RegexValidator(Param<String> param, Pattern pattern, String description) {
+    public RegexValidator(Param<String> param, Pattern pattern, String description) {
         super(param, description);
         this.pattern = pattern;
     }

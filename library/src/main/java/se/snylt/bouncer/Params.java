@@ -14,7 +14,7 @@ public abstract class Params {
         this.validators.addAll(Arrays.asList(validators));
     }
 
-    protected void registerValidator(Validator validator) {
+    protected void addValidator(Validator validator) {
         this.validators.add(validator);
     }
 
@@ -24,5 +24,9 @@ public abstract class Params {
             allValid = (validator.validate().isValid() && allValid);
         }
         return allValid;
+    }
+
+    public Validator getValidator(int index) {
+        return validators.get(index);
     }
 }
