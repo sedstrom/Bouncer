@@ -1,5 +1,6 @@
 # Bouncer
 Share parameter validation between method and caller.
+
 ![](http://i.giphy.com/OdyGA2spBFRCg.gif)
 
 ## Disclaimer
