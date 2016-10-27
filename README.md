@@ -1,5 +1,6 @@
 # Bouncer
 Share parameter validation between method and caller.
+![](http://i.giphy.com/OdyGA2spBFRCg.gif)
 
 ## Disclaimer
 This library is in a very early stage and will probably change a lot in the nearest future :)
@@ -76,4 +77,3 @@ Get validation result per paramter
         );
     }
 ```
-![](http://i.giphy.com/OdyGA2spBFRCg.gif)
